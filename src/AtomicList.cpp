@@ -1,4 +1,4 @@
-#include "AtomicList.h"
+ï»¿#include "AtomicList.h"
 
 
 CAtomicList::CAtomicList() :m_pTail(NULL),
@@ -12,17 +12,17 @@ CAtomicList::~CAtomicList()
 {
 }
 
-void CAtomicList::push_back(void* newNode) //ÄÚ´æ³Ø...´ı¸Ä½ø
+void CAtomicList::push_back(void* newNode) //å†…å­˜æ± ...å¾…æ”¹è¿›
 {
 	node *new_node	= new node(newNode);
 	node *next		= NULL;
 	node* tail		= m_pTail.load();
 
 	/*
-	 *Ò»¿ªÊ¼Ã»ÓĞÊı¾İÊ±,m_pTailÎª¿Õ,ÕâÊ±Ö»ĞèÒª½«m_pTailÖ¸Ö¸Ïò±¾½Úµã¼´¿É
-	 *Ê×ÏÈÇÀµ½¸ÃÔ­×Ó²Ù×÷µÄÏß³Ì»á¸üĞÂm_pTail,ÉèÖÃÍ·Ö¸ÕëµÄNEXT(±ÜÃâpushÓëpopÔÚÍ¬Ò»¸öÔªËØÉÏµÄ»¥³â),
-	 *È»ºó·µ»Ø,¶øºó½øÈë¸ÃÔ­×Ó²Ù×÷µÄ
-	 *Ïß³ÌÖ»»áµ¥´¿µÄ¸üĞÂtailºóÍË³öif½á¹¹.¼ÌĞøÍùÏÂÖ´ĞĞ
+	 *ä¸€å¼€å§‹æ²¡æœ‰æ•°æ®æ—¶,m_pTailä¸ºç©º,è¿™æ—¶åªéœ€è¦å°†m_pTailæŒ‡æŒ‡å‘æœ¬èŠ‚ç‚¹å³å¯
+	 *é¦–å…ˆæŠ¢åˆ°è¯¥åŸå­æ“ä½œçš„çº¿ç¨‹ä¼šæ›´æ–°m_pTail,è®¾ç½®å¤´æŒ‡é’ˆçš„NEXT(é¿å…pushä¸popåœ¨åŒä¸€ä¸ªå…ƒç´ ä¸Šçš„äº’æ–¥),
+	 *ç„¶åè¿”å›,è€Œåè¿›å…¥è¯¥åŸå­æ“ä½œçš„
+	 *çº¿ç¨‹åªä¼šå•çº¯çš„æ›´æ–°tailåé€€å‡ºifç»“æ„.ç»§ç»­å¾€ä¸‹æ‰§è¡Œ
 	*/
 	if (!m_pTail.load())
 	{
@@ -35,7 +35,7 @@ void CAtomicList::push_back(void* newNode) //ÄÚ´æ³Ø...´ı¸Ä½ø
 	}
 
 	/*
-	*¸üĞÂnextÖ¸Õë,µ±tailÖ¸ÕëµÄnextÎª¿ÕÊ±,Ôò±íÊ¾µ±Ç°tailÎªÎ²ÔªËØ
+	*æ›´æ–°nextæŒ‡é’ˆ,å½“tailæŒ‡é’ˆçš„nextä¸ºç©ºæ—¶,åˆ™è¡¨ç¤ºå½“å‰tailä¸ºå°¾å…ƒç´ 
 	*/
 	do {
 		tail = m_pTail.load();
@@ -43,10 +43,10 @@ void CAtomicList::push_back(void* newNode) //ÄÚ´æ³Ø...´ı¸Ä½ø
 	} while (!tail->next.compare_exchange_weak(next, new_node));
 
 	/*
-	* ¸Ãm_pTailÖ¸ÕëÎ´¸üĞÂÊ±,do whileµÄÑ­»·ÊÇ³ÖĞø½øĞĞµÄ.ÒòÎªtail->next != NULL
-	1.Èç¹ûÓĞÒ»¸öÏß³ÌT1£¬ËüµÄwhileÖĞµÄCASÈç¹û³É¹¦µÄ»°£¬ÄÇÃ´ÆäËüËùÓĞµÄ ËæºóÏß³ÌµÄCAS¶¼»áÊ§°Ü£¬È»ºó¾Í»áÔÙÑ­»·£¬
-	2.´ËÊ±£¬Èç¹ûT1 Ïß³Ì»¹Ã»ÓĞ¸üĞÂtailÖ¸Õë£¬ÆäËüµÄÏß³Ì¼ÌĞøÊ§°Ü£¬ÒòÎªtail->next²»ÊÇNULLÁË¡£
-	3.Ö±µ½T1Ïß³Ì¸üĞÂÍêtailÖ¸Õë£¬ÓÚÊÇÆäËüµÄÏß³ÌÖĞµÄÄ³¸öÏß³Ì¾Í¿ÉÒÔµÃµ½ĞÂµÄtailÖ¸Õë£¬¼ÌĞøÍùÏÂ×ßÁË¡£
+	* è¯¥m_pTailæŒ‡é’ˆæœªæ›´æ–°æ—¶,do whileçš„å¾ªç¯æ˜¯æŒç»­è¿›è¡Œçš„.å› ä¸ºtail->next != NULL
+	1.å¦‚æœæœ‰ä¸€ä¸ªçº¿ç¨‹T1ï¼Œå®ƒçš„whileä¸­çš„CASå¦‚æœæˆåŠŸçš„è¯ï¼Œé‚£ä¹ˆå…¶å®ƒæ‰€æœ‰çš„ éšåçº¿ç¨‹çš„CASéƒ½ä¼šå¤±è´¥ï¼Œç„¶åå°±ä¼šå†å¾ªç¯ï¼Œ
+	2.æ­¤æ—¶ï¼Œå¦‚æœT1 çº¿ç¨‹è¿˜æ²¡æœ‰æ›´æ–°tailæŒ‡é’ˆï¼Œå…¶å®ƒçš„çº¿ç¨‹ç»§ç»­å¤±è´¥ï¼Œå› ä¸ºtail->nextä¸æ˜¯NULLäº†ã€‚
+	3.ç›´åˆ°T1çº¿ç¨‹æ›´æ–°å®ŒtailæŒ‡é’ˆï¼Œäºæ˜¯å…¶å®ƒçš„çº¿ç¨‹ä¸­çš„æŸä¸ªçº¿ç¨‹å°±å¯ä»¥å¾—åˆ°æ–°çš„tailæŒ‡é’ˆï¼Œç»§ç»­å¾€ä¸‹èµ°äº†ã€‚
 	*/
 	m_pTail.compare_exchange_weak(tail, new_node);
 
@@ -60,11 +60,20 @@ void* CAtomicList::front()
 
 void* CAtomicList::pop_front()
 {
+	/*
+	*å¦‚æœé˜Ÿåˆ—ä¸ºç©ºåˆ™ç›´æ¥è¿”å›
+	*/
+	if (!m_Count.load()) return NULL;
+
 	node *head		= m_pHead.load();
 	node *popData   = head->next;
 	while (!head->next.compare_exchange_weak(popData, popData->next));
 
 	m_Count.fetch_sub(1);
+
+	/*
+	*è¿™é‡Œæœ‰ABAçš„é—®é¢˜.ä½†é‡‡ç”¨å†…å­˜æ± å¯ä»¥é¿å…
+	*/
 	return popData->data;
 }
 
