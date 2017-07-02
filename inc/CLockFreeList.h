@@ -13,15 +13,16 @@ struct node
 	atomic<node*> next;
 };
 
-class CAtomicList
+class CLockFreeList
 {
 public:
-	CAtomicList();				
-	~CAtomicList();
+	CLockFreeList();				
+	~CLockFreeList();
 	void push_back(void* newNode);
 	void* front();
 	void* pop_front();
 	bool empty();
+	unsigned int size();
 private:
 	atomic<node*> m_pHead;
 	atomic<node*> m_pTail;
